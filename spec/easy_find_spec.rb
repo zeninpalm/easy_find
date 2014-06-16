@@ -98,15 +98,29 @@ describe "Finder" do
           expect(command).to eql('find . -name "*.rb" -size 10')
         end
 
-        it "supports all matching criterias in 'where' arguments" do
+        it "supports name, size, atime and mtime matching criterias in 'where' arguments" do
           command = finder.find do
             where do
               name "*.rb"
               size 10
               atime 20
+              mtime 10
             end
           end
-          expect(command).to eql("find -name \"*.rb\" -size 10 -atime 20")
+          expect(command).to eql("find -name \"*.rb\" -size 10 -atime 20 -mtime 10")
+        end
+        
+        it "supports type, fstype, user, group and perm matching criterias in 'where' arguments" do
+          command = finder.find do
+            where do
+              type "f"
+              fstype "nfs"
+              user "yiwei"
+              group "admins"
+              perm 666
+            end
+          end
+          expect(command).to eql("find -type \"f\" -fstype \"nfs\" -user \"yiwei\" -group \"admins\" -perm 666")
         end
 
       end

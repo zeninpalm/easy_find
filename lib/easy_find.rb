@@ -52,6 +52,30 @@ module EasyFind
       build_unquoted_where_segment("-atime", n)
     end
 
+    def mtime(n)
+      build_unquoted_where_segment("-mtime", n)
+    end
+
+    def type(n)
+      build_quoted_where_segment("-type", n)
+    end
+
+    def fstype(n)
+      build_quoted_where_segment("-fstype", n)
+    end
+
+    def user(n)
+      build_quoted_where_segment("-user", n)
+    end
+
+    def group(n)
+      build_quoted_where_segment("-group", n)
+    end
+
+    def perm(n)
+      build_unquoted_where_segment("-perm", n)
+    end
+
     def build_quoted_where_segment(criteria, value)
       quoted = '"' + value.to_s + '"'
       build_where_segment(criteria, quoted)
