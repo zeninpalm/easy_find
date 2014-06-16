@@ -42,11 +42,23 @@ module EasyFind
     end
 
     def name(n)
-      @where_clause += SEPARATOR + "-name" + SEPARATOR + '"' + n.to_str() + '"'
+      @where_clause += SEPARATOR + "-name" + SEPARATOR + '"' + n.to_s() + '"'
     end
 
     def size(n)
       @where_clause += SEPARATOR + "-size" + SEPARATOR + n.to_s()
+    end
+
+    def atime(n)
+      @where_clause += SEPARATOR + "-atime" + SEPARATOR + n.to_s
+    end
+
+    def build_quoted_where_segment(criteria, value)
+      @where_clause += SEPARATOR + criteria + SEPARATOR + '"' + value.to_str() + '"'
+    end
+    
+    def build_unquoted_where_segment(criteria, value)
+      @where_clause += SEPARATOR + criteria + SEPARATOR + value.to_s
     end
 
     def make_where_str(block)

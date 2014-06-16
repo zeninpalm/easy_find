@@ -98,6 +98,17 @@ describe "Finder" do
           expect(command).to eql('find . -name "*.rb" -size 10')
         end
 
+        it "supports all matching criterias in 'where' arguments" do
+          command = finder.find do
+            where do
+              name "*.rb"
+              size 10
+              atime 20
+            end
+          end
+          expect(command).to eql("find -name \"*.rb\" -size 10 -atime 20")
+        end
+
       end
     end
   end
