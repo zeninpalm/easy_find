@@ -5,6 +5,7 @@ module EasyFind
     SEPARATOR = ' '
 
     def initialize
+      @folder_clause = ''
       @where_clause = ''
     end
 
@@ -13,12 +14,12 @@ module EasyFind
       if command.nil?
         BASE_FIND
       else
-        command
+        BASE_FIND + @folder_clause + @where_clause
       end
     end
 
     def in_folder(&block)
-      BASE_FIND + make_folder_name(block)
+      make_folder_name(block)
     end
 
     def where(&block)
@@ -34,9 +35,9 @@ module EasyFind
     def make_folder_name(block)
       folder = block.call
       if folder.is_a?(Array)
-        SEPARATOR + folder.join(" ")
+        @folder_clause = SEPARATOR + folder.join(" ")
       else
-        folder.nil? ? "" : (SEPARATOR + folder)
+        @folder_clause = folder.nil? ? "" : (SEPARATOR + folder)
       end
     end
 

@@ -75,6 +75,29 @@ describe "Finder" do
           end
           expect(command).to eql("find -name \"*.rb\" -size 10")
         end
+
+        it "concatenates folder names and 'where' arguments" do
+          command = finder.find do
+            in_folder { "." }
+            where do
+              name "*.rb"
+              size 10
+            end
+          end
+          expect(command).to eql('find . -name "*.rb" -size 10')
+        end
+        
+        it "concatenates folder names and 'where' arguments regardless of ordering" do
+          command = finder.find do
+            where do
+              name "*.rb"
+              size 10
+            end
+            in_folder { "." }
+          end
+          expect(command).to eql('find . -name "*.rb" -size 10')
+        end
+
       end
     end
   end
