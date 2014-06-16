@@ -24,7 +24,6 @@ module EasyFind
 
     def where(&block)
       make_where_str(block)
-      BASE_FIND + @where_clause
     end
 
     def with_actions
@@ -42,22 +41,27 @@ module EasyFind
     end
 
     def name(n)
-      @where_clause += SEPARATOR + "-name" + SEPARATOR + '"' + n.to_s() + '"'
+      build_quoted_where_segment("-name", n)
     end
 
     def size(n)
-      @where_clause += SEPARATOR + "-size" + SEPARATOR + n.to_s()
+      build_unquoted_where_segment("-size", n)
     end
 
     def atime(n)
-      @where_clause += SEPARATOR + "-atime" + SEPARATOR + n.to_s
+      build_unquoted_where_segment("-atime", n)
     end
 
     def build_quoted_where_segment(criteria, value)
-      @where_clause += SEPARATOR + criteria + SEPARATOR + '"' + value.to_str() + '"'
+      quoted = '"' + value.to_s + '"'
+      build_where_segment(criteria, quoted)
     end
     
     def build_unquoted_where_segment(criteria, value)
+      build_where_segment(criteria, value)
+    end
+
+    def build_where_segment(criteria, value)
       @where_clause += SEPARATOR + criteria + SEPARATOR + value.to_s
     end
 
