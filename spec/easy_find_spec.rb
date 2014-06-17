@@ -122,6 +122,26 @@ describe "Finder" do
           end
           expect(command).to eql("find -type \"f\" -fstype \"nfs\" -user \"yiwei\" -group \"admins\" -perm 666")
         end
+      end
+
+      context "modifiers in matching criterias" do
+        it "supports '+' modifiers in 'mtime'" do
+          command = finder.find do
+            where do
+              mtime :greater_than, 10
+            end
+          end
+          expect(command).to eql("find -mtime +10")
+        end
+        
+        it "supports '-' modifiers in 'mtime'" do
+          command = finder.find do
+            where do
+              mtime :less_than, 10
+            end
+          end
+          expect(command).to eql("find -mtime -10")
+        end
 
       end
     end

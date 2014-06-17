@@ -52,9 +52,22 @@ module EasyFind
       build_unquoted_where_segment("-atime", n)
     end
 
-    def mtime(n)
-      build_unquoted_where_segment("-mtime", n)
+    def mtime(*xs)
+      modified_param = modify(xs)
+      build_unquoted_where_segment("-mtime", modified_param)
     end
+      
+      def modify(xs)
+        if xs.length == 1
+          xs[0]
+        elsif xs.length == 2
+          if xs[0] == :greater_than
+            "+#{xs[1]}"
+          elsif xs[0] == :less_than
+            "-#{xs[1]}"
+          end
+        end
+      end
 
     def type(n)
       build_quoted_where_segment("-type", n)
