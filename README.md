@@ -9,7 +9,7 @@ with your perferred syntax.
 Specify find command in STDIN string
 _________________
 
-You may specify intended find command in the STDIN string as follows:
+Run *easy_find*, and you may specify intended find command in the STDIN string as follows:
 ```ruby
 EasyFind::Finder.find do
   in_folder { [".", "~", "/usr/bin"] }
@@ -32,7 +32,7 @@ Specify find command in a .rb file
 _____________________
 
 You may save the above contents in a .rb file, say demo.rb.
-Then run "*find_generate* demo.rb", and copy&paste generated printed find command line.
+Then run "*easy_find* demo.rb", and copy&paste generated printed find command line.
 
 API calls
 _____________________
