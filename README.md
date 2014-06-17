@@ -6,10 +6,9 @@ It enables users to specify find command line. The syntax of
 EasyFind is quite simple, and you may easily replace current syntax
 with your perferred syntax.
 
-Usage
-_____
+Specify find command in STDIN string
+_________________
 
-1. Specify find command in STDIN string
 You may specify intended find command in the STDIN string as follows:
 ```ruby
 EasyFind::Finder.find do
@@ -29,11 +28,15 @@ end
 ```
 The script will print generated find command line in the last line.
 
-2. Specify find command in a .rb file
+Specify find command in a .rb file
+_____________________
+
 You may save the above contents in a .rb file, say demo.rb.
 Then run "*find_generate* demo.rb", and copy&paste generated printed find command line.
 
-3. API calls
+API calls
+_____________________
+
 ```ruby
 require 'easy_find'
 
