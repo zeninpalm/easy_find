@@ -15,5 +15,36 @@ describe EasyFind::DefaultCommandMaker do
       expect(folder_name).to eql(' ~ /home/yiwei .')
     end
   end
+
+  describe "#make_where_str" do
+    it "has #make_where_str method" do
+      where_clause = command_maker.make_where_str do
+        name "*.rb"
+        size 10
+      end
+      expect(where_clause).to eql(" -name \"*.rb\" -size 10")
+    end
+
+    it "supports name, size, atime and mtime matching criterias in 'where' arguments" do
+      where_clause = command_maker.make_where_str do
+        name "*.rb"
+        size 10
+        atime 20
+        mtime 10
+      end
+      expect(where_clause).to eql(" -name \"*.rb\" -size 10 -atime 20 -mtime 10")
+    end
+
+    it "supports type, fstype, user, group and perm matching criterias in 'where' arguments" do
+      where_clause = command_maker.make_where_str do
+        type "f"
+        fstype "nfs"
+        user "yiwei"
+        group "admins"
+        perm 666
+      end
+      expect(where_clause).to eql(" -type \"f\" -fstype \"nfs\" -user \"yiwei\" -group \"admins\" -perm 666")
+    end
+  end
 end
 
