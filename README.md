@@ -26,7 +26,25 @@ EasyFind::Finder.find do
   with_actions { print }
 end
 
-^D
-
+```
 The script will print generated find command line in the last line.
+
+2. Specify find command in a .rb file
+You may save the above contents in a .rb file, say demo.rb.
+Then run "*find_generate* demo.rb", and copy&paste generated printed find command line.
+
+3. API calls
+```ruby
+require 'easy_find'
+
+find_command = EasyFind::Finder.find do
+  in_folder { "/usr/bin" }
+  where do
+    ...
+  end
+  with_actions do
+    ...
+  end
+end
+```
 
