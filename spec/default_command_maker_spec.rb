@@ -47,6 +47,28 @@ describe EasyFind::DefaultCommandMaker do
     end
   end
 
+  describe "grouping options" do
+    it "supports grouping" do
+      where_clause = command_maker.make_where_str do
+        grouping do
+          mtime :greater_than, 7
+          atime :greater_than, 30
+        end
+      end
+      expect(where_clause).to eql(" \\( -mtime +7 -atime +30 \\)")
+    end
+    it "supports or_else" do
+      where_clause = command_maker.make_where_str do
+        grouping do
+          mtime :greater_than, 7
+          or_else
+          atime :greater_than, 30
+        end
+      end
+      expect(where_clause).to eql(" \\( -mtime +7 -o -atime +30 \\)")
+    end
+  end
+
   describe "#make_actions_str" do
     it "accepts empty block" do
       command_maker.make_actions_str {}

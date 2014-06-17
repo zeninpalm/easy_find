@@ -179,10 +179,57 @@ describe "Finder" do
             in_folder { ["/mydir1", "/mydir2"] }
             where do
               size :greater_than, 2000
+              atime :greater_than, 30
             end
             with_actions { print }
           end
-          expect(command).to eql("find /mydir1 /mydir2 -size +2000 -print")
+          expect(command).to eql("find /mydir1 /mydir2 -size +2000 -atime +30 -print")
+        end
+
+        it "generates 'find /mydir -atime +100 -ok rm {} \\;'" do
+          command = finder.find do
+            in_folder { "/mydir" }
+            where do
+              atime :greater_than, 100
+            end
+            with_actions do
+              ok "rm {}"
+            end
+          end
+          expect(command).to eql("find /mydir -atime +100 -ok rm {} \\;")
+        end
+
+        it "generates 'find /mydir \\(-mtime +20 -o -atime +40 \\) -exec ls -l {} \\;'" do
+          command = finder.find do
+            in_folder { "/mydir" }
+            where do
+              grouping do
+                mtime :greater_than, 20
+                or_else
+                atime :greater_than, 40
+              end
+            end
+            with_actions do
+              exec "ls -l {}"
+            end
+          end
+          expect(command).to eql("find /mydir \\( -mtime +20 -o -atime +40 \\) -exec ls -l {} \\;")
+        end
+
+        it "generates 'find /prog -type f -size +1000 -name core -print -exec rm {} \\;" do
+          command = finder.find do
+            in_folder { "/prog" }
+            where do
+              type "f"
+              size :greater_than, 1000
+              name "core"
+            end
+            with_actions do
+              print
+              exec "rm {}"
+            end
+          end
+          expect(command).to eql("find /prog -type \"f\" -size +1000 -name \"core\" -print -exec rm {} \\;")
         end
       end
     end

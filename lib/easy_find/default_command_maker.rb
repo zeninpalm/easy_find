@@ -54,14 +54,18 @@ module EasyFind
             if xs.length == 1
               xs[0]
             elsif xs.length == 2
+              prefix_with_sign_symbol(xs)
+            end
+          end
+
+            def prefix_with_sign_symbol(xs)
               if xs[0] == :greater_than
                 "+#{xs[1]}"
               elsif xs[0] == :less_than
                 "-#{xs[1]}"
               end
             end
-          end
-
+ 
       def type(n)
         build_quoted_where_segment("-type", n)
       end
@@ -94,6 +98,16 @@ module EasyFind
         def build_where_segment(criteria, value)
           @where_clause += SEPARATOR + criteria + SEPARATOR + value.to_s
         end
+
+      def grouping(&block)
+        in_group_statement = instance_eval &block
+        str = in_group_statement.nil? ? '' : in_group_statement
+        @where_clause = SEPARATOR + "\\(" + @where_clause + SEPARATOR + "\\)"
+      end
+
+      def or_else
+        @where_clause += SEPARATOR + "-o"
+      end
 
       def print
         build_action_str "-print"
