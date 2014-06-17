@@ -6,9 +6,10 @@ module EasyFind
     BASE_FIND = "find"
     SEPARATOR = ' '
 
-    def initialize
+    def initialize(command_maker = DefaultCommandMaker)
       @folder_clause = ''
       @where_clause = ''
+      @command_maker = DefaultCommandMaker.new
     end
 
     def find(&block)
@@ -21,7 +22,7 @@ module EasyFind
     end
 
     def in_folder(&block)
-      make_folder_name(block)
+      @folder_clause += @command_maker.instance_eval { make_folder_name(&block) }
     end
 
     def where(&block)
@@ -33,15 +34,6 @@ module EasyFind
     end
 
     private
-    def make_folder_name(block)
-      folder = block.call
-      if folder.is_a?(Array)
-        @folder_clause = SEPARATOR + folder.join(" ")
-      else
-        @folder_clause = folder.nil? ? "" : (SEPARATOR + folder)
-      end
-    end
-
     def name(n)
       build_quoted_where_segment("-name", n)
     end
