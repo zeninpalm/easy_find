@@ -232,6 +232,27 @@ describe "Finder" do
           expect(command).to eql("find /prog -type \"f\" -size +1000 -name \"core\" -print -exec rm {} \\;")
         end
       end
+
+      context "facade" do
+        it "allows calling using EasyFind::Finder.find" do
+          EasyFind::Finder.find { }
+        end
+        it "generates 'find /prog -type f -size +1000 -name core -print -exec rm {} \\;" do
+          command = EasyFind::Finder.find do
+            in_folder { "/prog" }
+            where do
+              type "f"
+              size :greater_than, 1000
+              name "core"
+            end
+            with_actions do
+              print
+              exec "rm {}"
+            end
+          end
+          expect(command).to eql("find /prog -type \"f\" -size +1000 -name \"core\" -print -exec rm {} \\;")
+        end
+      end
     end
   end
 end

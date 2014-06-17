@@ -6,6 +6,10 @@ module EasyFind
     BASE_FIND = "find"
     SEPARATOR = ' '
 
+    def self.find(&block)
+      self.new.find(&block)
+    end
+
     def initialize(command_maker = DefaultCommandMaker)
       @folder_clause = ''
       @where_clause = ''
