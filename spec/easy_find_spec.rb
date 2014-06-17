@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe "Finder" do
-    let(:finder) { EasyFind::Finder.new }
+  let(:finder) { EasyFind::Finder.new }
 
   it "is callable with empty block" do
     finder.find do

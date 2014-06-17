@@ -1,3 +1,5 @@
+require 'easy_find/default_command_maker'
+
 module EasyFind
 
   class Finder
