@@ -142,7 +142,48 @@ describe "Finder" do
           end
           expect(command).to eql("find -mtime -10")
         end
+      end
 
+      context "action clause" do
+        it "supports single action" do
+          command = finder.find do
+            with_actions do
+              print
+            end
+          end
+          expect(command).to eql("find -print") 
+        end
+        it "supports multiple actions" do
+          command = finder.find do
+            with_actions do
+              print
+              ok "rm -rf {}"
+            end
+          end
+          expect(command).to eql("find -print -ok rm -rf {} \\;") 
+        end
+      end
+
+      context "full examples" do
+        it "generates 'find . -name \"*.c\" -print" do
+          command = finder.find do
+            in_folder { "." }
+            where { name "*.c" }
+            with_actions { print }
+          end
+          expect(command).to eql("find . -name \"*.c\" -print")
+        end
+
+        it "generates 'find /mydir1 /mydir2 -size +2000 -atime +30 -print" do
+          command = finder.find do
+            in_folder { ["/mydir1", "/mydir2"] }
+            where do
+              size :greater_than, 2000
+            end
+            with_actions { print }
+          end
+          expect(command).to eql("find /mydir1 /mydir2 -size +2000 -print")
+        end
       end
     end
   end

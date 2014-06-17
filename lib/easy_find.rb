@@ -9,6 +9,7 @@ module EasyFind
     def initialize(command_maker = DefaultCommandMaker)
       @folder_clause = ''
       @where_clause = ''
+      @action_clause = ''
       @command_maker = DefaultCommandMaker.new
     end
 
@@ -17,7 +18,7 @@ module EasyFind
       if command.nil?
         BASE_FIND
       else
-        BASE_FIND + @folder_clause + @where_clause
+        BASE_FIND + @folder_clause + @where_clause + @action_clause
       end
     end
 
@@ -29,8 +30,8 @@ module EasyFind
       @where_clause += @command_maker.instance_eval { make_where_str(&block) }
     end
 
-    def with_actions
-      yield
+    def with_actions(&block)
+      @action_clause += @command_maker.instance_eval { make_actions_str(&block) }
     end
   end
 end

@@ -46,5 +46,47 @@ describe EasyFind::DefaultCommandMaker do
       expect(where_clause).to eql(" -type \"f\" -fstype \"nfs\" -user \"yiwei\" -group \"admins\" -perm 666")
     end
   end
+
+  describe "#make_actions_str" do
+    it "accepts empty block" do
+      command_maker.make_actions_str {}
+    end
+    it "supports 'print'" do
+      action_clause = command_maker.make_actions_str do
+        print
+      end
+      expect(action_clause).to eql(" -print")
+    end
+    it "supports 'exec'" do
+      action_clause = command_maker.make_actions_str do
+        exec "ls -l {}"
+      end
+      expect(action_clause).to eql(" -exec ls -l {} \\;")
+    end
+    it "supports 'ok'" do
+      action_clause = command_maker.make_actions_str do
+        ok "rm {}"
+      end
+      expect(action_clause).to eql(" -ok rm {} \\;")
+    end
+    it "supports 'mount'" do
+      action_clause = command_maker.make_actions_str do
+        mount 
+      end
+      expect(action_clause).to eql(" -mount")
+    end
+    it "supports 'xdev'" do
+      action_clause = command_maker.make_actions_str do
+        xdev 
+      end
+      expect(action_clause).to eql(" -xdev")
+    end
+    it "supports 'prune'" do
+      action_clause = command_maker.make_actions_str do
+        prune 
+      end
+      expect(action_clause).to eql(" -prune")
+    end
+  end
 end
 
