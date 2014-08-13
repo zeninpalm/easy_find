@@ -1,6 +1,6 @@
 [ ![Codeship Status for zeninpalm/easy_find](https://www.codeship.io/projects/d90d0ce0-fb4e-0131-f607-1228941fa717/status)](https://www.codeship.io/projects/29182)
 
-EasyFind
+EasyFind v1.0
 =============
 
 EasyFind is a thin wrapper of \*nix find command.
